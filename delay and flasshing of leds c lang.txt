@@ -1,0 +1,27 @@
+//PROGRAM OF 1 SEC USING TIMER 1 AND FLASH LEDS OF PORTD 
+
+
+void delay (int preload); 
+
+void main (void) 
+
+{
+TRISD =0; //MAKING PORT D AS AN OUTPUT PORT 
+T0CON=0B00000011; //TIMER 0 USE HUA WA HAI 
+PORTD=0x55; 
+
+while (1){LATD=~LATD; 
+delay (3036)}; 
+}
+
+void delay (int preload) 
+{ for (int i=0; i<ms; i++)
+for (int j=0; j<70; j++)
+}
+
+TIMER 0 PAR 8 PRESCALARS 
+
+FOR 1 SECOND DELAY 1000,000 INSTRUCTIONS 
+MAX value of 65536 for timer 0 and 1. for this we use prescalar. 1000000/16=62500-65536= result 3036 to be loaded 
+
+

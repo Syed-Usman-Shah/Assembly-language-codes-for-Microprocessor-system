@@ -1,0 +1,100 @@
+
+#include<xc.h>
+
+unsigned char count =0;
+unsigned char value =0;
+unsigned char units =0;
+unsigned char tens  =0;
+unsigned char hund  =0;
+
+
+void __interrupt() ISR (void)\
+{
+   if (ADIF ==1)
+{
+  ADIF=0;
+  value =ADRESH;
+
+hund =value/100;
+hunf=hund+48;
+value = value% 100;
+tens= value/10;
+tensa= tens +48;
+units = value % 10;
+units = units +48;
+
+TXIF =0;
+TXREG=hund;
+while(TXIF==0)
+TXIF =0;
+TXREG =tens;
+while(TXIF == 0);
+TXIF=0;
+TXREG= units;
+
+while(TXIF==0);
+TXIF=0;
+
+GODONE=1;
+
+}
+
+if (TMR0IF==1)
+{
+count=TMR1L;
+count=count/5;
+
+hund =count/100;
+hunf=hund+48;
+value = count % 100;
+tens= count/10;
+tensa= tens +48;
+units = count % 10;
+units = units +48;
+
+TXREG='\r';
+while(TXIF==0);
+TXIF=0;
+ while(1);
+}
+
+
+}
+
+
+
+void main (void)
+{
+   TRISA =1;
+   ADCON0=0B00000001;
+   ADCON1=0B00001101;
+   ADCON2=0B00100101;
+
+
+   TOCON=0B00000110;
+   T1CON=0B10000010;
+   TMR0=26474;
+   TMR1=0;
+   
+GIE=1;
+PEIE=1;
+TMROIE=1;
+ADIE=1;
+
+
+SPEN=1;
+TXEN=1;
+SYNC=0;
+BRGH=1;
+CREN=1;
+SPBRG=25;
+TXIF=0;
+
+TMR1ON=1;
+TMR0ON=1;
+
+GO DONE=1;
+while(1);
+}
+
+

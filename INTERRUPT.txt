@@ -1,0 +1,48 @@
+//INTERRUPTS PROGRAMMING. EXTERNAL, TIMER OR ANY OTHER PERIPHERAL 
+// COUNT NUMBER OF PEOPLE ENTERING AND LEAVING A ROOM AT THE DOOR. TURN ON LIGHTS OF ROOM INSIDE 
+TURN LIGHTS OFF WHEN ROOM EMPTY 
+FULLL WHEN 20 PEOPLE 
+USE TIMER.COUNTER INTERRUPT OR ANY OTHER 
+
+//2 EXTERNAL INTERRUPTS 
+
+unsigned char count=0; 
+
+void __interrupt () ISR (void) 
+
+{
+if (INT0IF==1) 
+count++; 
+else if (INT1IF==1) 
+count--; 
+INT0IF=0; 
+INT1IF=0; 
+}
+
+void main (void)
+
+{
+TRISB=0x0FF; //input
+TRISD=0; //output
+PORTD=0; //clearing
+
+GIE=1; 
+INT0IE=1; 
+INT1IE=1; 
+
+TMR0ON=1; 
+
+while (1)
+{
+if (count>0) 
+RD0=1; //turn room lights on 
+else 
+RD0=0; //room off 
+if (count>=20) 
+RD1=1; //room full
+else 
+RD1=0;  
+}
+}
+
+
